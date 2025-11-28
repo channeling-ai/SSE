@@ -53,8 +53,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/channeling-be:latest
-            ${{ secrets.DOCKER_USERNAME }}/channeling-be:${{ github.run_id }}
+            ${{ secrets.DOCKER_USERNAME }}/channeling-sse:latest
+            ${{ secrets.DOCKER_USERNAME }}/channeling-sse:${{ github.run_id }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
