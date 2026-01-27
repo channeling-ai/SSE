@@ -3,10 +3,12 @@ package channeling.sse.global.infrastructure.redis;
 import channeling.sse.global.infrastructure.sse.SseService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RedisSubscriber implements MessageListener {
@@ -20,12 +22,12 @@ public class RedisSubscriber implements MessageListener {
             String body = new String(message.getBody());
             RedisMessage redisMessage = objectMapper.readValue(body, RedisMessage.class);
 
-            System.out.println("📩 Redis → SSE: " + body);
+            log.info("Redis → SSE: {}", body);
 
             sseService.send(redisMessage.getUserId(), redisMessage.getMessage());
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Redis 메시지 처리 실패", e);
         }
     }
 }
