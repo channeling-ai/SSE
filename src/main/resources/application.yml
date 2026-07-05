@@ -27,4 +27,18 @@ jwt:
     expiration: 3600      # ? ??, 60min
     header: Authorization
 
+# K8s liveness/readiness probe용 actuator 설정
+# probes.enabled=true → /actuator/health/{liveness,readiness} 그룹 활성화
+# (readiness는 readinessState만 → DB/Redis 장애로 파드가 재시작되지 않게 함)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+
 

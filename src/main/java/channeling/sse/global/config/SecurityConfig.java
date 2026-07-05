@@ -43,6 +43,8 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint()))
 //                // TODO 엔드포인트 추가 (개발 후)
                 .authorizeHttpRequests(authorize -> authorize
+                        // K8s liveness/readiness probe는 인증 없이 접근 (401 방지)
+                        .requestMatchers("/actuator/health/**").permitAll()
                         .requestMatchers("/test").authenticated()
                         .anyRequest().permitAll()
                 )
