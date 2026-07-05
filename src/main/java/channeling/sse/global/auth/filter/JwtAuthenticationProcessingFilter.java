@@ -34,7 +34,9 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     private static final AntPathMatcher pathMatcher = new AntPathMatcher();
 
     private static final String[] JWT_WHITELIST = {
-            "/actuator/health"
+            // K8s probe 하위 경로(/actuator/health/liveness, /readiness)까지 인증 제외
+            // (AntPathMatcher는 정확 일치라 /** 필요)
+            "/actuator/health/**"
     };
 
     /**
