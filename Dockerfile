@@ -6,9 +6,10 @@ FROM eclipse-temurin:17-jdk-jammy AS builder
 WORKDIR /app
 
 # 의존성만 먼저 복사 → 코드 변경만 있을 때 다운로드 캐시 재활용
+# dependencies 태스크로 실제 의존성 jar를 미리 받아 이 레이어에 캐싱
 COPY gradlew build.gradle settings.gradle ./
 COPY gradle ./gradle
-RUN chmod +x gradlew && ./gradlew --version
+RUN chmod +x gradlew && ./gradlew dependencies --no-daemon
 
 # 나머지 소스 복사 후 빌드
 COPY src ./src
